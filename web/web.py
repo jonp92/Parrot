@@ -1,3 +1,4 @@
+import socket
 from flask import Flask, request, jsonify, render_template, url_for
 from parrot import Parrot
 
@@ -5,6 +6,7 @@ class ParrotWeb(Parrot):
     def __init__(self):
         super().__init__()
         self.app = Flask(__name__)
+        self.server_ip = socket.gethostbyname(socket.gethostname())
         self.setup_routes()
 
     def setup_routes(self):
@@ -21,7 +23,7 @@ class ParrotWeb(Parrot):
         
         @self.app.route('/watch_log', methods=['GET'])
         def watch_log():
-            return render_template('watch_log.html', callsign=self.callsign)
+            return render_template('watch_log.html', callsign=self.callsign, server_ip=self.server_ip)
         
     def run(self):
         self.app.run(host=self.host, port=self.web_port, debug=self.debug)
