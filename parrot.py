@@ -22,7 +22,7 @@ class Parrot:
         
     def read_log(self, lines: int = None, filter: str = None):
         # Find all files that contain self.log_file in their name
-        files = glob.glob(f'*{self.log_file}*')
+        files = glob.glob(f'{self.log_directory}/{self.log_file}*')
 
         # If no files were found, raise an exception
         if not files:
