@@ -8,7 +8,7 @@ class ParrotAPI(Parrot):
     def __init__(self):
         super().__init__()
         self.app = FastAPI()
-        self.origins = ["http://localhost:8000"]
+        self.origins = ["*"]
         self.app.add_middleware(
             CORSMiddleware,
             allow_origins=self.origins,
