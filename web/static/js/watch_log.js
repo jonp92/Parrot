@@ -1,4 +1,5 @@
-var eventSource = new EventSource("http://localhost:8001/watch_log");
+const serverIP = document.getElementById("server_ip").value
+var eventSource = new EventSource(`http://${serverIP}:8001/watch_log`);
 const callsignLine = document.getElementById("callsign");
 const dateLine = document.getElementById("date");
 const sourceLine = document.getElementById("source");
