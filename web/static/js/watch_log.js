@@ -48,4 +48,4 @@ function updateLog() {
     sourceLine.textContent = line.split("Source: ")[1].split(" Callsign: ")[0];
 }
 
-setInterval(updateLog, 1000);
+setInterval(updateLog, 100);

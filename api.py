@@ -20,7 +20,7 @@ class ParrotAPI(Parrot):
         self.app.add_api_route('/watch_log', self.watch_log)
     
     
-    async def watch_log(self, request: Request, interval: int = 1):
+    async def watch_log(self, request: Request, interval: int = .1):
         async def event_stream():
             try:
                 while True:
