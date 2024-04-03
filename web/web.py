@@ -6,8 +6,19 @@ class ParrotWeb(Parrot):
     def __init__(self):
         super().__init__()
         self.app = Flask(__name__)
-        self.server_ip = socket.gethostbyname(socket.gethostname())
+        self.server_ip = self.get_server_ip()
         self.setup_routes()
+    
+    def get_server_ip(self):
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        try:
+            s.connect(('10.255.255.255', 1))
+            ip = s.getsockname()[0]
+        except:
+            ip = socket.gethostbyname(socket.gethostname())
+        finally:
+            s.close()
+        return ip
 
     def setup_routes(self):
         @self.app.route('/')
