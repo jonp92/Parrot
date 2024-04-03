@@ -1,5 +1,6 @@
 import json
 import os
+import glob
 from collections import deque
 
 class Parrot:
@@ -20,7 +21,17 @@ class Parrot:
         
         
     def read_log(self, lines: int = None, filter: str = None):
-        with open(self.log_file, 'r') as f:
+        # Find all files that contain self.log_file in their name
+        files = glob.glob(f'*{self.log_file}*')
+
+        # If no files were found, raise an exception
+        if not files:
+            raise FileNotFoundError(f'No files found that contain "{self.log_file}" in their name')
+
+        # Find the newest file
+        newest_file = max(files, key=os.path.getctime)
+
+        with open(newest_file, 'r') as f:
             last_lines = deque(f, maxlen=lines)
             for line in last_lines:
                 if filter is not None:
