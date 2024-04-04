@@ -1,5 +1,4 @@
 # Description: This is the main file that will be used to launch the application
-import os
 import subprocess
 
 if __name__ == '__main__':
@@ -9,5 +8,8 @@ if __name__ == '__main__':
     subprocess.run(web_command, shell=True)
     api_pid = subprocess.check_output(['pgrep', '-f', 'api.py'], text=True).strip().split()[-1]
     web_pid = subprocess.check_output(['pgrep', '-f', 'web.web'], text=True).strip().split()[-1]
+    with open('pids.txt', 'w') as f:
+        f.write(f'API PID: {api_pid}\n')
+        f.write(f'Web PID: {web_pid}\n')
     print(f'API PID: {api_pid}')
     print(f'Web PID: {web_pid}')
