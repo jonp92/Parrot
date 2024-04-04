@@ -125,8 +125,4 @@ function toggleIndicator() {
     }
 }
 
-/* on eventSource connect, set interval to update the "radio display" and log table from SSE queue */
-eventSource.onopen = function() {
-    updateLogInterval = setInterval(updateLog, 100);
-}
-//setInterval(updateLog, 100);
+setInterval(updateLog, 100);
