@@ -7,6 +7,7 @@ const callsignRegex = /\b[A-Z0-9]{1,2}[0-9]{1}[A-Z]{1,3}\b/g;
 const rfOrNetworkRegex = /\bRF\b|\bnetwork\b/g;
 const dateRegex = /\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\b/g;
 const myCallsign = document.getElementById("my_callsign").textContent;
+const tableBody = document.getElementById("log_table");
 let lastLine;
 let queue = [];
 
@@ -46,6 +47,14 @@ function updateLog() {
     callsignLine.textContent = line.split("Callsign: ")[1];
     dateLine.textContent = line.split("Time: ")[1].split(" Source: ")[0];
     sourceLine.textContent = line.split("Source: ")[1].split(" Callsign: ")[0];
+    createLogRow(dateLine.textContent, sourceLine.textContent, callsignLine.textContent);
+}
+
+function createLogRow(date, source, callsign) {
+    var newRow = tableBody.insertRow();
+    newRow.insertCell().textContent = date;
+    newRow.insertCell().textContent = source;
+    newRow.insertCell().textContent = callsign;
 }
 
 setInterval(updateLog, 100);
