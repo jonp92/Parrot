@@ -80,7 +80,9 @@ function updateLog() {
         callsignLine.style.color = "#0f0";
         return;
     }
-    toggleIndicator();
+    if (blinking === false) {
+        toggleIndicator();
+    }
     lastLine = line;
     callsignLine.style.color = "red";
     callsignLine.textContent = line.split("Callsign: ")[1];
