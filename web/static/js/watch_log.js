@@ -52,7 +52,6 @@ eventSource.onmessage = function(event) {
     if (endOfTxMatch) {
         endOfMessage = true;
     } else {
-        console.log("End of transmission not found");
         endOfMessage = false;
     }
 };
