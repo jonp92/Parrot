@@ -34,7 +34,6 @@ let queue = [];
     *
 */
 eventSource.onmessage = function(event) {
-    toggleIndicator();
     const callsignMatch = event.data.match(callsignRegex);
     const rfOrNetworkMatch = event.data.match(rfOrNetworkRegex);
     const dateMatch = event.data.match(dateRegex);
@@ -78,7 +77,7 @@ function updateLog() {
         callsignLine.style.color = "#0f0";
         return;
     }
-
+    toggleIndicator();
     lastLine = line;
     callsignLine.style.color = "red";
     callsignLine.textContent = line.split("Callsign: ")[1];
@@ -125,4 +124,8 @@ function toggleIndicator() {
     }
 }
 
-setInterval(updateLog, 100);
+/* on eventSource connect, set interval to update the "radio display" and log table from SSE queue */
+eventSource.onopen = function() {
+    updateLogInterval = setInterval(updateLog, 100);
+}
+//setInterval(updateLog, 100);
