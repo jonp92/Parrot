@@ -49,7 +49,9 @@ eventSource.onmessage = function(event) {
         }
     }
     if (endOfTxMatch) {
-        toggleIndicator();
+        if (blinking === true) {
+            toggleIndicator();
+        }
     }
 };
 
