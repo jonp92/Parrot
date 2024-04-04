@@ -49,6 +49,7 @@ eventSource.onmessage = function(event) {
         }
     }
     if (endOfTxMatch) {
+        console.log("End of transmission");
         if (blinking === true) {
             toggleIndicator();
         }
