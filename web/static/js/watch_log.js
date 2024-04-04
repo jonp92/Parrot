@@ -16,9 +16,12 @@ const dateLine = document.getElementById("date");
 const sourceLine = document.getElementById("source");
 const callsignRegex = /\b[A-Z0-9]{1,2}[0-9]{1}[A-Z]{1,3}\b/g; // regex matches callsigns with 1-2 numbers, 1 number, and 1-3 letters
 const rfOrNetworkRegex = /\bRF\b|\bnetwork\b/g; // regex matches RF or network strings
+const endOfTxRegex = /\bend of transmission\b/g; // regex matches end of transmission strings
 const dateRegex = /\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\b/g; // regex matches date strings in the format YYYY-MM-DD HH:MM:SS.SSS
 const myCallsign = document.getElementById("my_callsign").textContent;
 const tableBody = document.getElementById("log_table");
+const indicator = document.getElementById("indicator");
+let blinking = false;
 let lastLine;
 let queue = [];
 
@@ -31,9 +34,11 @@ let queue = [];
     *
 */
 eventSource.onmessage = function(event) {
+    toggleIndicator();
     const callsignMatch = event.data.match(callsignRegex);
     const rfOrNetworkMatch = event.data.match(rfOrNetworkRegex);
     const dateMatch = event.data.match(dateRegex);
+    const endOfTxMatch = event.data.match(endOfTxRegex);
     if (callsignMatch) {
         if (rfOrNetworkMatch.includes('RF')) {
             queue.push(`Time: ${dateMatch[0]} Source: RF: Callsign: ${callsignMatch[0]}`);
@@ -43,6 +48,9 @@ eventSource.onmessage = function(event) {
         } else {
             queue.push(`Unknown: ${callsignMatch[0]}`);
         }
+    }
+    if (endOfTxMatch) {
+        toggleIndicator();
     }
 };
 
@@ -94,5 +102,29 @@ function createLogRow(date, source, callsign) {
     newRow.insertCell().textContent = callsign;
 }
 
-/* set interval to update the "radio display" and log table from SSE queue */
-setInterval(updateLog, 100);
+function toggleIndicator() {
+    /* if (indicator.classList.contains('blink')) {
+        indicator.classList.remove('blink');
+    } else {
+        indicator.classList.add('blink');
+    } */
+    if (blinking) {
+        blinking = false;
+        clearInterval(blinkInterval)
+    } else {
+        blinking = true;
+        blinkInterval = setInterval(() => {
+            if (indicator.textContent === '●') {
+                indicator.textContent = '○';
+            } else if (indicator.textContent === '○'){
+                indicator.textContent = '●';
+            }
+        }, 500);
+    }
+}
+
+/* on eventSource connect, set interval to update the "radio display" and log table from SSE queue */
+eventSource.onopen = function() {
+    updateLogInterval = setInterval(updateLog, 100);
+}
+//setInterval(updateLog, 100);
