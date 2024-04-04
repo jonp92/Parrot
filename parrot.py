@@ -3,8 +3,44 @@ import os
 import glob
 from collections import deque
 
+'''
+Parrot is a class that reads a log file and returns the log lines based on the number of lines and a filter string.
+
+The Parrot class reads the config.json file in the root directory and sets the configuration values as attributes of the class.
+
+Parameters:
+    None
+
+Methods:
+    read_log: A method that reads the log file and returns the log lines based on the number of lines and a filter string
+
+Variables:
+    config: A dictionary that stores the configuration values from the config.json file
+    log_directory: A string that represents the directory where the log files are stored
+    log_file: A string that represents the log file name
+    debug: A boolean value that represents whether debug mode is enabled
+
+Returns:
+    None
+
+Exceptions:
+    FileNotFoundError: An exception that is raised when the log files are not found
+'''
+
 class Parrot:
     def __init__(self):
+        '''
+        Parrot constructor that reads the config.json file and sets the configuration values as attributes of the class.
+        
+        Parameters:
+            None
+        
+        Variables:
+            config: A dictionary that stores the configuration values from the config.json file
+        
+        Returns:
+            None
+        '''
         self.config = json.load(open('config.json')) if 'config.json' in os.listdir() else None
         if self.config is None:
             print('config.json not found. Please create a config.json file in the root directory.')
@@ -21,6 +57,24 @@ class Parrot:
         
         
     def read_log(self, lines: int = None, filter: str = None):
+        '''
+        read_log is a method that reads the log file and returns the log lines based on the number of lines and a filter string.
+        
+        Parameters:
+            lines: An integer that represents the number of lines to read from the log file
+            filter: A string that represents the filter to apply to the log lines
+        
+        Variables:
+            files: A list of strings that represent the log files in the log directory
+            newest_file: A string that represents the newest log file
+            last_lines: A deque object that stores the last lines read from the log file
+        
+        Returns:
+            generator: A generator that yields the log lines
+            
+        Exceptions:
+            FileNotFoundError: An exception that is raised when the log files are not found
+        '''
         # Find all files that contain self.log_file in their name
         files = glob.glob(f'{self.log_directory}/{self.log_file}*')
 
@@ -44,6 +98,9 @@ class Parrot:
 
         
 if __name__ == '__main__':
+    '''
+    This block of code is used to run the Parrot application.
+    '''
     p = Parrot()
     lines = p.read_log(int(input('Enter number of lines to read: ')), input('Enter a filter string: '))
     print('\n'.join(lines))
