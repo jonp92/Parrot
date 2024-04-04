@@ -115,8 +115,10 @@ function toggleIndicator() {
         blinking = true;
         blinkInterval = setInterval(() => {
             if (indicator.textContent === '●') {
+                console.log('changing to ○')
                 indicator.textContent = '○';
             } else if (indicator.textContent === '○'){
+                console.log('changing to ●')
                 indicator.textContent = '●';
             }
         }, 500);
