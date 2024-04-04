@@ -23,7 +23,7 @@ class ParrotWeb(Parrot):
     def setup_routes(self):
         @self.app.route('/')
         def index():
-            return render_template('index.html')
+            return render_template('index.html', callsign=self.callsign, server_ip=self.server_ip)
         
         @self.app.route('/read_log', methods=['GET'])
         def read_log():
@@ -31,10 +31,6 @@ class ParrotWeb(Parrot):
             filter = request.args.get('filter', None)
             log_lines = self.read_log(lines=int(lines), filter=filter)
             return jsonify(log_lines)
-        
-        @self.app.route('/watch_log', methods=['GET'])
-        def watch_log():
-            return render_template('watch_log.html', callsign=self.callsign, server_ip=self.server_ip)
         
     def run(self):
         self.app.run(host=self.host, port=self.web_port, debug=self.debug)
