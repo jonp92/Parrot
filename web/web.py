@@ -1,5 +1,6 @@
 import socket
 from flask import Flask, request, jsonify, render_template, url_for
+from flask_compress import Compress
 from parrot import Parrot
 
 '''
@@ -25,6 +26,7 @@ class ParrotWeb(Parrot):
     def __init__(self):
         super().__init__()
         self.app = Flask(__name__)
+        Compress(self.app)
         self.server_ip = self.get_server_ip()
         self.setup_routes()
     

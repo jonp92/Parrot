@@ -2,3 +2,4 @@ uvicorn
 fastapi
 fastapi.middleware
 flask
+flask-compress
