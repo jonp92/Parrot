@@ -39,6 +39,7 @@ eventSource.onmessage = function(event) {
     const rfOrNetworkMatch = event.data.match(rfOrNetworkRegex);
     const dateMatch = event.data.match(dateRegex);
     const endOfTxMatch = event.data.match(endOfTxRegex);
+    endOfMessage = false;
     if (callsignMatch) {
         if (rfOrNetworkMatch.includes('RF')) {
             queue.push(`Time: ${dateMatch[0]} Source: RF: Callsign: ${callsignMatch[0]}`);
@@ -51,8 +52,6 @@ eventSource.onmessage = function(event) {
     }
     if (endOfTxMatch) {
         endOfMessage = true;
-    } else {
-        endOfMessage = false;
     }
 };
 
