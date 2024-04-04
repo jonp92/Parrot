@@ -117,9 +117,11 @@ function toggleIndicator() {
         indicator.classList.add('blink');
     } */
     if (blinking === true) {
+        console.log("Turning off blinking");
         blinking = false;
         clearInterval(blinkInterval)
     } else if (blinking === false){
+        console.log("Turning on blinking");
         blinking = true;
         blinkInterval = setInterval(() => {
             if (indicator.textContent === '●') {
