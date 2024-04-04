@@ -87,9 +87,9 @@ function updateLog() {
     dateLine.textContent = line.split("Time: ")[1].split(" Source: ")[0];
     sourceLine.textContent = line.split("Source: ")[1].split(" Callsign: ")[0];
     createLogRow(dateLine.textContent, sourceLine.textContent, callsignLine.textContent);
-    if (endOfMessage === true) {
+    if (endOfMessage === true && blinking === true) {
         toggleIndicator();
-    }
+    }   
 }
 
 /*
