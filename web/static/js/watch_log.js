@@ -108,10 +108,10 @@ function toggleIndicator() {
     } else {
         indicator.classList.add('blink');
     } */
-    if (blinking) {
+    if (blinking === true) {
         blinking = false;
         clearInterval(blinkInterval)
-    } else {
+    } else if (blinking === false){
         blinking = true;
         blinkInterval = setInterval(() => {
             if (indicator.textContent === '●') {
