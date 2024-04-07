@@ -97,6 +97,9 @@ class Parrot:
                         continue
                 else:
                     yield line.strip()
+        
+        if log_override is not None:
+            self.log_file = self.config['log_file']
 
         
 if __name__ == '__main__':
