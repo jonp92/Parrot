@@ -1,4 +1,4 @@
-#/home/jonathan/Parrot/.venv/bin/python
+#!/home/jonathan/Parrot/.venv/bin/python
 # Description: This is the main file that will be used to launch the application
 import subprocess
 import argparse
