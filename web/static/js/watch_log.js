@@ -22,6 +22,7 @@ const dateRegex = /\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\b/g; // regex ma
 const myCallsign = document.getElementById("my_callsign").textContent;
 const tableBody = document.getElementById("log_table");
 const indicator = document.getElementById("indicator");
+const reflector = document.getElementById("reflector");
 let blinking = false;
 let endOfMessage = false;
 let lastLine;
@@ -62,7 +63,9 @@ eventSource.onerror = function(error) {
 };
 
 eventSource2.onmessage = function(event) {
-    console.log(event.data);
+    if (event.data.textContent.includes('Linked to')) {
+        reflector.textContent = event.data.textContent.split('Linked to ')[1];
+    }
 };
 
 eventSource2.onerror = function(error) {
