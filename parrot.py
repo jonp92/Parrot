@@ -56,7 +56,7 @@ class Parrot:
             print(f'{key}: {self.config[key]}')
         
         
-    def read_log(self, lines: int = None, filter: str = None):
+    def read_log(self, lines: int = None, filter: str = None, log_override: str = None):
         '''
         read_log is a method that reads the log file and returns the log lines based on the number of lines and a filter string.
         
@@ -75,6 +75,8 @@ class Parrot:
         Exceptions:
             FileNotFoundError: An exception that is raised when the log files are not found
         '''
+        if log_override is not None:
+            self.log_file = log_override
         # Find all files that contain self.log_file in their name
         files = glob.glob(f'{self.log_directory}/{self.log_file}*')
 

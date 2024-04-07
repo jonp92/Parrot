@@ -1,10 +1,60 @@
 #!/home/pi-star/Parrot/.venv/bin/python
-# Description: This is the main file that will be used to launch the application
+'''
+    launcher.py
+    Manage the lifecycle of the Parrot application
+    Description: This is the main file that will be used to launch the application. Note: can be run directly from the command line without calling python.
+    Author: Jonathan L. Pressler
+    Date: 2024/04/07
+    Version: 1.0
+'''
+
 import subprocess
 import argparse
 import os
 
 if __name__ == '__main__':
+    '''
+    This block of code is used to run the Parrot application.
+    
+    This script is used to manage the lifecycle of the Parrot application. It can start, stop, update, and eventually check the status of the application.
+    
+    The following command is used to start the API and Web applications:
+    nohup python api.py > api.log 2>&1 &
+    nohup python -m web.web > web.log 2>&1 &
+    
+    The following command is used to kill the processes:
+    kill -9 <PID>
+    
+    The following command is used to update the application:
+    git pull
+    
+    The following command is used to check for updates:
+    git fetch
+    
+    The following command is used to check for changes:
+    git diff HEAD origin/main
+    
+    This script supports the following command line arguments:
+    -k, --kill: Kill the running processes
+    -u, --update: Update the application
+    
+    If the script is run without any arguments, it will start the processes.
+    
+    Example:
+    ./launcher.py -k -- Kill the running processes
+    ./launcher.py -u -- Update the application
+    ./launcher.py -- Start the processes (The script will check for updates every time it is run)
+    
+    Exceptions:
+        FileNotFoundError: An exception that is raised when the PIDs file is not found
+        PermissionError: An exception that is raised when there is a permission error
+        subprocess.CalledProcessError: An exception that is raised when there is an error running the commands
+        Exception: An exception that is raised when an unknown error occurs
+        
+    TODO:
+        - Add support for checking the status of the processes
+        - Add support for restarting the processes
+    '''
     api_command = 'nohup python api.py > api.log 2>&1 &'
     web_command = 'nohup python -m web.web > web.log 2>&1 &'
     arg_parser = argparse.ArgumentParser(description='Launch the Parrot application')
@@ -117,12 +167,3 @@ if __name__ == '__main__':
     except Exception as e:
         print(f'Error: {e}')
         print('An unknown error occurred. Please check the error message and try again.')
-    except KeyboardInterrupt:
-        print('Exiting...')
-        with open('pids.txt', 'r') as f:
-            api_pid = f.readline().strip().split()[-1]
-            web_pid = f.readline().strip().split()[-1]
-        subprocess.run(['kill', api_pid])
-        subprocess.run(['kill', web_pid])
-        print(f'Killed the processes with PIDs: {api_pid} and {web_pid}')
-        exit(0)

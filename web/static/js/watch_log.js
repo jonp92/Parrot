@@ -11,6 +11,7 @@
 /* global variables */
 const serverIP = document.getElementById("server_ip").value || "localhost"; // get the server IP from the hidden input element or if it is not set, use localhost
 var eventSource = new EventSource(`http://${serverIP}:8001/watch_log`); // create a new EventSource object with the server IP and port 8001
+var eventSource2 = new EventSource(`http://${serverIP}:8001/watch_log?log_override=YSFGateway`); // create a new EventSource object with the server IP and port 8001
 const callsignLine = document.getElementById("callsign");
 const dateLine = document.getElementById("date");
 const sourceLine = document.getElementById("source");
@@ -58,6 +59,14 @@ eventSource.onmessage = function(event) {
 
 eventSource.onerror = function(error) {
     console.error("Failed to connect to SSE", error);
+};
+
+eventSource2.onmessage = function(event) {
+    console.log(event.data);
+};
+
+eventSource2.onerror = function(error) {
+    console.error("Failed to connect to SSE_2", error);
 };
 
 /*

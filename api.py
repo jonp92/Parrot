@@ -100,7 +100,11 @@ class ParrotAPI(Parrot):
         async def event_stream():
             try:
                 while True:
-                    log_lines = self.read_log(lines=1)
+                    log_override = request.query_params.get('log_override', None)
+                    if log_override:
+                        log_lines = self.read_log(lines=1, log_override=log_override)
+                    else:
+                        log_lines = self.read_log(lines=1)
                     for line in log_lines:
                         yield f"data: {line}\n\n"
                     await asyncio.sleep(interval)
