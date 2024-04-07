@@ -37,7 +37,6 @@ let queue = [];
     *
 */
 eventSource.onmessage = function(event) {
-    console.log(event.data);
     const callsignMatch = event.data.match(callsignRegex);
     const rfOrNetworkMatch = event.data.match(rfOrNetworkRegex);
     const dateMatch = event.data.match(dateRegex);
