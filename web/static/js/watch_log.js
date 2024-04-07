@@ -66,10 +66,8 @@ eventSource2.onmessage = function(event) {
     if (event.data.includes('Linked to')) {
         reflector.textContent = event.data.split('Linked to ')[1];
     }
-    else {
-        setInterval(() => {
-            console.log(event.data);
-        }, 5000);
+    else if (event.data.includes('Disconnect by remote command')) {
+        reflector.textContent = '';
     }
 };
 
