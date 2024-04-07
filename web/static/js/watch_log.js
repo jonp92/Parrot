@@ -37,6 +37,7 @@ let queue = [];
     *
 */
 eventSource.onmessage = function(event) {
+    console.log(event.data);
     const callsignMatch = event.data.match(callsignRegex);
     const rfOrNetworkMatch = event.data.match(rfOrNetworkRegex);
     const dateMatch = event.data.match(dateRegex);
@@ -65,6 +66,9 @@ eventSource.onerror = function(error) {
 eventSource2.onmessage = function(event) {
     if (event.data.includes('Linked to')) {
         reflector.textContent = event.data.split('Linked to ')[1];
+    }
+    if (event.data.includes('Unlinked')) {
+        reflector.textContent = '';
     }
 };
 
