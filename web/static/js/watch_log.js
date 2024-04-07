@@ -64,7 +64,7 @@ eventSource.onerror = function(error) {
 
 eventSource2.onmessage = function(event) {
     if (event.data.includes('Linked to')) {
-        reflector.textContent = event.data.textContent.split('Linked to ')[1];
+        reflector.textContent = event.data.split('Linked to ')[1];
     }
 };
 
