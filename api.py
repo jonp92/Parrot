@@ -40,7 +40,8 @@ class ParrotAPI(Parrot):
         super().__init__()
         self.app = FastAPI()
         self.server_ip = self.get_server_ip()
-        self.origins = [self.server_ip, f'http://{self.server_ip}', f'http://{self.server_ip}:{self.web_port}']
+        self.hostname = socket.gethostname()
+        self.origins = [self.server_ip, f'http://{self.server_ip}', f'http://{self.server_ip}:{self.web_port}', f'http://{self.hostname}', f'http://{self.hostname}:{self.web_port}']
         print(f'Allowed origins: {self.origins}')
         self.app.add_middleware(
             CORSMiddleware,
