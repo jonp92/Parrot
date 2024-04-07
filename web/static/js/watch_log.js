@@ -66,7 +66,7 @@ eventSource2.onmessage = function(event) {
     if (event.data.includes('Linked to')) {
         reflector.textContent = event.data.split('Linked to ')[1];
     }
-    if (event.data.includes('Unlinked')) {
+    if (event.data.includes('DISCONNECT Reply')) {
         reflector.textContent = '';
     }
 };
