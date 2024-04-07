@@ -55,7 +55,7 @@ if __name__ == '__main__':
         - Add support for checking the status of the processes
         - Add support for restarting the processes
     '''
-    api_command = 'nohup python api.py > api.log 2>&1 &'
+    api_command = 'nohup python -m api.api > api.log 2>&1 &'
     web_command = 'nohup python -m web.web > web.log 2>&1 &'
     arg_parser = argparse.ArgumentParser(description='Launch the Parrot application')
     arg_parser.add_argument('-k', '--kill', action='store_true', help='Kill the running processes')
@@ -148,7 +148,7 @@ if __name__ == '__main__':
             print(f'Error checking for updates: {e}')
         subprocess.run(api_command, shell=True)
         subprocess.run(web_command, shell=True)
-        api_pid = subprocess.check_output(['pgrep', '-f', 'api.py'], text=True).strip().split()[-1]
+        api_pid = subprocess.check_output(['pgrep', '-f', 'api.api'], text=True).strip().split()[-1]
         web_pid = subprocess.check_output(['pgrep', '-f', 'web.web'], text=True).strip().split()[-1]
         with open('pids.txt', 'w') as f:
             f.write(f'API PID: {api_pid}\n')

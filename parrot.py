@@ -7,6 +7,7 @@ from collections import deque
 Parrot is a class that reads a log file and returns the log lines based on the number of lines and a filter string.
 
 The Parrot class reads the config.json file in the root directory and sets the configuration values as attributes of the class.
+This class is used as the base class for the API and Web classes to read the log files and return the log lines in real-time using Server-Sent Events (SSE).
 
 Parameters:
     None
@@ -104,7 +105,7 @@ class Parrot:
         
 if __name__ == '__main__':
     '''
-    This block of code is used to run the Parrot application.
+    This block of code is used to run the Parrot application as a standalone application.
     '''
     p = Parrot()
     lines = p.read_log(int(input('Enter number of lines to read: ')), input('Enter a filter string: '))

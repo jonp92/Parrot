@@ -111,4 +111,5 @@ if __name__ == '__main__':
     This code block creates an instance of ParrotWeb and runs the web application when the script is executed directly instead of being imported.
     '''
     p = ParrotWeb()
+    print(f'Starting ParrotWeb on http://{p.host}:{p.web_port}')
     p.run()
