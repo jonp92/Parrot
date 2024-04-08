@@ -71,12 +71,15 @@ class Installer:
             None
             
         '''
-        print('Installing Parrot...')
+        print(f'Installing Parrot in {install_dir}...')
         self.create_venv(install_dir)
         try:
             subprocess.run(['cp', '-r', '..', install_dir], check=True)
+            print('Copied files to install directory.')
             subprocess.run(['cp', f'{self.script_dir}/parrot.service', '/etc/systemd/system/parrot.service'], check=True)
+            print('Copied service file to /etc/systemd/system.')
             subprocess.run(['systemctl', 'daemon-reload'], check=True)
+            print('Reloaded systemd daemon, Parrot now available as a service.')
         except PermissionError:
             print('Permission denied. Please run the script with elevated privileges.')
             exit(1)
