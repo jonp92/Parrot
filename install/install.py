@@ -2,6 +2,32 @@ import venv
 import subprocess
 import os
 
+'''
+Installer is a class that installs the Parrot application.
+
+The installer class is used to install the Parrot application. It creates a virtual environment, installs the requirements,
+copies the files to the install directory, and sets up the systemd service.
+
+Variables:
+    script_dir: A string that represents the directory of the script
+
+Methods:
+    create_venv(venv_dir: str = '.venv', install_requirements: bool = True): Creates a virtual environment for the Parrot application.
+    install(install_dir: str = '/usr/local/lib/parrot'): Installs the Parrot application.
+
+Returns:
+    None
+    
+Exceptions:
+    FileExistsError: An exception that is raised when the virtual environment already exists
+    PermissionError: An exception that is raised when there is a permission error
+    Exception: An exception that is raised when an unknown error occurs
+
+TODO:
+    - Add support for uninstalling the application
+    - Add support for updating the application
+'''
+
 class Installer:
     def __init__(self):
         if os.geteuid() != 0:
@@ -98,5 +124,8 @@ class Installer:
         print('sudo systemctl enable parrot')
         
 if __name__ == '__main__':
+    '''
+    Main function that runs the installer when the script is executed directly vs. being imported.
+    '''
     installer = Installer()
     installer.install()
