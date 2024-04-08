@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 WorkingDirectory=/usr/local/lib/parrot
-ExecStart=/usr/local/lib/parrot/bin/python3 launcher.py
-ExecStop=/usr/local/lib/parrot/bin/python3 launcher.py -k
+ExecStart=/usr/local/lib/parrot/.venv/bin/python3 launcher.py
+ExecStop=/usr/local/lib/parrot/.venv/bin/python3 launcher.py -k
 Restart=on-failure
 
 [Install]
