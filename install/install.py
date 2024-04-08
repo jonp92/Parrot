@@ -73,7 +73,7 @@ def install(install_dir: str = '/usr/local/lib/parrot'):
     create_venv(install_dir)
     try:
         global script_dir
-        subprocess.run(['cp', '-r', '.', install_dir], check=True)
+        subprocess.run(['cp', '-r', '..', install_dir], check=True)
         subprocess.run(['cp', f'{script_dir}/parrot.service', '/etc/systemd/system/parrot.service'], check=True)
         subprocess.run(['systemctl', 'daemon-reload'], check=True)
     except PermissionError:
