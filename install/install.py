@@ -71,6 +71,7 @@ class Installer:
             None
             
         '''
+        print('Installing Parrot...')
         self.create_venv(install_dir)
         try:
             subprocess.run(['cp', '-r', '..', install_dir], check=True)
@@ -94,6 +95,5 @@ class Installer:
         print('sudo systemctl enable parrot')
         
 if __name__ == '__main__':
-    print('Installing Parrot...')
     installer = Installer()
     installer.install()
