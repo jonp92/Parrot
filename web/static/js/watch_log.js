@@ -43,7 +43,7 @@ eventSource.onmessage = function(event) {
     const endOfTxMatch = event.data.match(endOfTxRegex);
     if (callsignMatch) {
         if (rfOrNetworkMatch.includes('RF')) {
-            queue.push(`Time: ${dateMatch[0]} Source: RF: Callsign: ${callsignMatch[0]}`);
+            queue.push(`Time: ${Date(dateMatch[0])} Source: RF: Callsign: ${callsignMatch[0]}`);
         }
         else if (rfOrNetworkMatch.includes('network')) {
             queue.push(`Time: ${dateMatch[0]} Source: Network: Callsign: ${callsignMatch[0]}`);
