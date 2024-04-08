@@ -3,6 +3,7 @@ Description=Parrot Service
 After=network.target
 
 [Service]
+Type=forking
 WorkingDirectory=/usr/local/lib/parrot
 ExecStart=/usr/local/lib/parrot/.venv/bin/python3 launcher.py
 ExecStop=/usr/local/lib/parrot/.venv/bin/python3 launcher.py -k
