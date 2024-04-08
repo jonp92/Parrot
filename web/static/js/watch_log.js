@@ -46,7 +46,7 @@ eventSource.onmessage = function(event) {
             queue.push(`Time: ${dateMatch[0]} Source: RF: Callsign: ${callsignMatch[0]}`);
         }
         else if (rfOrNetworkMatch.includes('network')) {
-            queue.push(`Time: ${dateMatch[0]} Source: Network Callsign: ${callsignMatch[0]}`);
+            queue.push(`Time: ${dateMatch[0]} Source: Network: Callsign: ${callsignMatch[0]}`);
         } else {
             queue.push(`Unknown: ${callsignMatch[0]}`);
         }
