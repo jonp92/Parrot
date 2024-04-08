@@ -41,14 +41,15 @@ eventSource.onmessage = function(event) {
     const rfOrNetworkMatch = event.data.match(rfOrNetworkRegex);
     const dateMatch = event.data.match(dateRegex);
     const endOfTxMatch = event.data.match(endOfTxRegex);
+    let formattedDate = new Date(dateMatch[0]).toLocaleString();
     if (callsignMatch) {
         if (rfOrNetworkMatch.includes('RF')) {
-            queue.push(`Time: ${Date(dateMatch[0])} Source: RF: Callsign: ${callsignMatch[0]}`);
+            queue.push(`Time: ${formattedDate} Source: RF: Callsign: ${callsignMatch[0]}`);
         }
         else if (rfOrNetworkMatch.includes('network')) {
-            queue.push(`Time: ${Date(dateMatch[0])} Source: Network: Callsign: ${callsignMatch[0]}`);
+            queue.push(`Time: ${formattedDate} Source: Network: Callsign: ${callsignMatch[0]}`);
         } else {
-            queue.push(`Time: ${Date(dateMatch[0])} Source: Unknown: Callsign: ${callsignMatch[0]}`);
+            queue.push(`Time: ${formattedDate} Source: Unknown: Callsign: ${callsignMatch[0]}`);
         }
     }
     if (endOfTxMatch) {
