@@ -27,8 +27,9 @@ def create_venv(venv_parent_dir: str, install_requirements: bool = True):
         Exception: An exception that is raised when an unknown error occurs
     '''
     venv_dir = '.venv'
+    full_dir = f'{venv_parent_dir}/{venv_dir}'
     try:
-        venv.EnvBuilder(with_pip=True).create(f'{venv_parent_dir}/{venv_dir}')
+        venv.EnvBuilder(with_pip=True).create(full_dir)
         print('Virtual environment created successfully.')
     except FileExistsError:
         print('Virtual environment already exists. Skipping creation.')
@@ -45,7 +46,7 @@ def create_venv(venv_parent_dir: str, install_requirements: bool = True):
             print('requirements.txt not found. Please create a requirements.txt file in the root directory.')
             print('Not automatically installing requirements...')
         try:
-            result = subprocess.check_output([f'{venv_dir}/bin/pip', 'install', '-r', requirements_file], text=True)
+            result = subprocess.check_output([f'{full_dir}/bin/pip', 'install', '-r', requirements_file], text=True)
         except subprocess.CalledProcessError as e:
             print(f'Error: {e}')
             print('There was an error installing the requirements. Please check the error message and try again.')
