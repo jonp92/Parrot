@@ -55,8 +55,8 @@ if __name__ == '__main__':
         - Add support for checking the status of the processes
         - Add support for restarting the processes
     '''
-    api_command = 'nohup python -m api.api > api.log 2>&1 &'
-    web_command = 'nohup python -m web.web > web.log 2>&1 &'
+    api_command = 'nohup python3 -m api.api > api.log 2>&1 &'
+    web_command = 'nohup python3 -m web.web > web.log 2>&1 &'
     arg_parser = argparse.ArgumentParser(description='Launch the Parrot application')
     arg_parser.add_argument('-k', '--kill', action='store_true', help='Kill the running processes')
     arg_parser.add_argument('-u', '--update', action='store_true', help='Update the application')
