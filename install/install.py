@@ -40,6 +40,7 @@ def create_venv(venv_parent_dir: str, install_requirements: bool = True):
         print(f'Error creating virtual environment: {e}')
         exit(1)
     if install_requirements:
+        global script_dir
         script_dir = os.path.dirname(os.path.realpath(__file__))
         requirements_file = os.path.join(script_dir, 'requirements.txt')
         if not os.path.exists(requirements_file):
@@ -71,8 +72,9 @@ def install(install_dir: str = '/usr/local/lib/parrot'):
     '''
     create_venv(install_dir)
     try:
+        global script_dir
         subprocess.run(['cp', '-r', '.', install_dir], check=True)
-        subprocess.run(['cp', 'install/parrot.service', '/etc/systemd/system/parrot.service'], check=True)
+        subprocess.run(['cp', f'{script_dir}/parrot.service', '/etc/systemd/system/parrot.service'], check=True)
         subprocess.run(['systemctl', 'daemon-reload'], check=True)
     except PermissionError:
         print('Permission denied. Please run the script with elevated privileges.')
