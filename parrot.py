@@ -61,6 +61,8 @@ class Parrot:
         '''
         read_log is a method that reads the log file and returns the log lines based on the number of lines and a filter string.
         
+        Uses deque to store the last lines read from the log file and returns the log lines based on the number of lines and a filter string.
+        
         Parameters:
             lines: An integer that represents the number of lines to read from the log file
             filter: A string that represents the filter to apply to the log lines
