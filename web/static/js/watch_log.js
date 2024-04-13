@@ -21,8 +21,11 @@ const endOfTxRegex = /\bend of transmission\b/g; // regex matches end of transmi
 const dateRegex = /\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\b/g; // regex matches date strings in the format YYYY-MM-DD HH:MM:SS.SSS
 const myCallsign = document.getElementById("my_callsign").textContent;
 const tableBody = document.getElementById("log_table");
+const table = document.getElementById("call_log");
 const indicator = document.getElementById("indicator");
 const reflector = document.getElementById("reflector");
+const clearLogButton = document.getElementById("clear_log");
+const expansionButton = document.getElementById("expansion_button");
 let blinking = false;
 let endOfMessage = false;
 let lastLine;
@@ -75,6 +78,17 @@ eventSource2.onmessage = function(event) {
 eventSource2.onerror = function(error) {
     console.error("Failed to connect to SSE_2", error);
 };
+
+clearLogButton.addEventListener('click', () => {
+    while (tableBody.firstChild) {
+        tableBody.removeChild(tableBody.firstChild);
+    }
+});
+
+expansionButton.addEventListener('click', () => {
+    table.classList.toggle('scrollable');
+    table.classList.toggle('sticky-header');
+});
 
 /*
     * updateLog - This function updates the "radio display" with the latest activity and logs it to the table.

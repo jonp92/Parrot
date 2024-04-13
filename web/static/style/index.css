@@ -36,6 +36,18 @@
     font-size: 36px;
     margin-right: 10px;
   }
+
+  .scrollable {
+    max-height: 275px;
+    overflow-y: auto;
+  }
+
+  .sticky-header thead {
+    position: sticky;
+    top: 0;
+    background: #000; /* Adjust this value to match your table header background color */
+    z-index: 10;
+  }
   
 
   
