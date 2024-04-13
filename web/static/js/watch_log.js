@@ -137,6 +137,9 @@ function createLogRow(date, source, callsign) {
     newRow.insertCell().textContent = date;
     newRow.insertCell().textContent = source;
     newRow.insertCell().textContent = callsign;
+    if (table.classList.contains('scrollable')) {
+        table.scrollTop = tableBody.scrollHeight; // scroll to the bottom of the table
+    }
 }
 
 function toggleIndicator() {
