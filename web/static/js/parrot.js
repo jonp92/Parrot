@@ -1,10 +1,14 @@
 /*
-    * watch_log.js - This file is responsible for connecting to SSE and updating the "radio display" with the latest activity and logging it to the table.
+    * parrot.js - This file is responsible for connecting to SSE and updating the "radio display" with the latest activity and logging it to the table.
     *
     * Author: Jonathan L. Pressler
     * Date: 2024-04-04
-    * Version: 1.0
-    * License: MIT
+    * Version: 1.5
+    *
+    * Changelog:
+    * 1.0 - Initial version
+    * 1.5 - Added a second EventSource object to watch for YSFGateway logs and display the reflector/room in the reflector element. Additionally, added a
+    * clear log button to clear the log table and an expansion button to toggle the scrollable and sticky-header classes on the table.
     * 
 */
 
@@ -38,6 +42,16 @@ let queue = [];
     * 
     * eventSource.onerror - This event listener listens for errors from the server and logs them to the console.
     *
+    * eventSource2.onmessage - This event listener listens for incoming messages from the server and parses the data to find the reflector/room. 
+    * It then sets the text content of the reflector element to the reflector/room.
+    * 
+    * eventSource2.onerror - This event listener listens for errors from the server and logs them to the console.
+    * 
+    * clearLogButton.addEventListener - This event listener listens for a click on the clear log button and clears the log table.
+    * 
+    * expansionButton.addEventListener - This event listener listens for a click on the expansion button and toggles the scrollable and
+    * sticky-header classes on the table.
+    * 
 */
 eventSource.onmessage = function(event) {
     const callsignMatch = event.data.match(callsignRegex);
@@ -63,7 +77,8 @@ eventSource.onmessage = function(event) {
 };
 
 eventSource.onerror = function(error) {
-    console.error("Failed to connect to SSE", error);
+    console.error("Failed to connect to SSE at: ", eventSource.url, "with error: ", error);
+    console.error("This event source is for MMDVMHost logs and used to identify the callsign and source.");
 };
 
 eventSource2.onmessage = function(event) {
@@ -76,7 +91,8 @@ eventSource2.onmessage = function(event) {
 };
 
 eventSource2.onerror = function(error) {
-    console.error("Failed to connect to SSE_2", error);
+    console.error("Failed to connect to SSE at: ", eventSource.url, "with error: ", error);
+    console.error("This event source is for YSFGateway logs and used to identify the reflector/room.");
 };
 
 clearLogButton.addEventListener('click', () => {
@@ -142,6 +158,20 @@ function createLogRow(date, source, callsign) {
     }
 }
 
+/*
+    * toggleIndicator - This function toggles the indicator between a filled circle and an empty circle.
+    *
+    * if the indicator has the class of blink, it removes the class. If it does not have the class, it adds the class.
+    * 
+    * if the indicator is blinking, it clears the interval and sets the text content of the indicator to an empty circle. 
+    * If the indicator is not blinking, it sets the interval to toggle the text content between a filled circle and an empty circle.
+    * 
+    * @param {boolean} blinking - A boolean to determine if the indicator is blinking or not.
+    * @param {number} blinkInterval - An interval to toggle the text content of the indicator.
+    * 
+    * @returns {void}
+    *
+*/
 function toggleIndicator() {
     /* if (indicator.classList.contains('blink')) {
         indicator.classList.remove('blink');
@@ -166,8 +196,7 @@ function toggleIndicator() {
     }
 }
 
-/* on eventSource connect, set interval to update the "radio display" and log table from SSE queue */
+/* on eventSource connect, set interval to update the "radio display" and log table from SSE queue providing Callsign/Source info */
 eventSource.onopen = function() {
     updateLogInterval = setInterval(updateLog, 100);
 }
-//setInterval(updateLog, 100);
