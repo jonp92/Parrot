@@ -1,5 +1,5 @@
 /*
-    * parrot.js - This file is responsible for connecting to SSE and updating the "radio display" with the latest activity and logging it to the table.
+    * parrot.js - This file is responsible for connecting to multiple SSEs and updating the "radio display" with the latest activity and logging it to the table.
     *
     * Author: Jonathan L. Pressler
     * Date: 2024-04-04
