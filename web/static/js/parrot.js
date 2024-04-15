@@ -106,8 +106,8 @@ expansionButton.addEventListener('click', () => {
     let text = expansionButton.textContent;
     console.log(text);
     if (text === '▼') {
-        expansionButton.textContent = '◄';
-    } else if (text === '◄') {
+        expansionButton.textContent = '▲';
+    } else if (text === '▲') {
         expansionButton.textContent = '▼';
     }
     table.classList.toggle('scrollable');
