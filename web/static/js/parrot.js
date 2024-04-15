@@ -102,6 +102,13 @@ clearLogButton.addEventListener('click', () => {
 });
 
 expansionButton.addEventListener('click', () => {
+    let text = expansionButton.textContent;
+    console.log(text);
+    if (text === '▼') {
+        expansionButton.textContent = '◄';
+    } else if (text === '◄') {
+        expansionButton.textContent = '▼';
+    }
     table.classList.toggle('scrollable');
     table.classList.toggle('sticky-header');
 });
@@ -120,10 +127,8 @@ function updateLog() {
     if (queue.length === 0) {
         return;
     }
-
     const line = queue.shift();
     if (line === lastLine) {
-        callsignLine.style.color = "#0f0";
         return;
     }
     if (blinking === false) {

@@ -3,10 +3,10 @@
     border: 1px solid #555;
     border-radius: 5px;
     color: rgb(34, 37, 34);
-    font-family: 'Digital-7', monospace; /* This is a common digital font. You may need to find and include it. */
+    font-family: 'Digital-7', monospace; /* This is a common digital font. Must be included in the HTML srcs*/
     padding: 10px;
     width: 400px;
-    box-shadow: inset 0 0 5px rgba(0,255,0,0.5); /* Mimics the glow effect */
+    box-shadow: inset 0 0 5px rgba(246, 245, 245, 0.64); /* Mimics the glow effect */
   }
 
   .lcd-display p {
