@@ -89,7 +89,7 @@ if __name__ == '__main__':
             subprocess.run(['kill', '-9', api_pid]) # Force kill the process (if the API is being accessed, it will not close until the connection is closed or the process is killed forcefully)
             subprocess.run(['kill', web_pid])
             print(f'Killed the processes with PIDs: {api_pid} and {web_pid}')
-            os.remove('pids.txt')
+            os.remove(pid_path)
             exit(0)
         except PermissionError as e:
             print(f'Error: {e}')
