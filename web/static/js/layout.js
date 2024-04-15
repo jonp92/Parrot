@@ -43,6 +43,6 @@ window.onresize = function() {
         expansionButton.textContent = '▼';
     } else if (mobile === false) {
         table.classList.remove('scrollable');
-        expansionButton.textContent = '◄';
+        expansionButton.textContent = '▲';
     }
 }
