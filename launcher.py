@@ -55,15 +55,27 @@ if __name__ == '__main__':
         - Add support for checking the status of the processes
         - Add support for restarting the processes
     '''
-    api_command = 'nohup .venv/bin/python3 -m api.api > api.log 2>&1 &'
-    web_command = 'nohup .venv/bin/python3 -m web.web > web.log 2>&1 &'
+    current_dir = os.path.dirname(os.path.realpath(__file__))
+    is_service = False
+    pid_path = 'pids.txt'
+    if current_dir == '/usr/local/lib/parrot':
+        # If the script is run from the /usr/local/lib/parrot directory, the log files will be written to /var/lib/parrot
+        # This is because when running from Pi-Star, the /usr/local/lib/parrot directory is read-only.
+        # We also set the is_service variable to True for further code to be aware that the script is running as a service.
+        is_service = True
+        pid_path = '/var/lib/parrot/pids.txt'
+        api_command = 'nohup .venv/bin/python3 -m api.api > /var/lib/parrot/api.log 2>&1 &'
+        web_command = 'nohup .venv/bin/python3 -m web.web > /var/lib/parrot/web.log 2>&1 &'
+    else:
+        api_command = 'nohup .venv/bin/python3 -m api.api > api.log 2>&1 &'
+        web_command = 'nohup .venv/bin/python3 -m web.web > web.log 2>&1 &'
     arg_parser = argparse.ArgumentParser(description='Launch the Parrot application')
     arg_parser.add_argument('-k', '--kill', action='store_true', help='Kill the running processes')
     arg_parser.add_argument('-u', '--update', action='store_true', help='Update the application')
     args = arg_parser.parse_args()
     if args.kill:
         try:
-            with open('pids.txt', 'r') as f:
+            with open(pid_path, 'r') as f:
                 api_pid = f.readline().strip().split()[-1]
                 web_pid = f.readline().strip().split()[-1]
         except FileNotFoundError:
@@ -113,8 +125,8 @@ if __name__ == '__main__':
             exit(1)
     
     try:
-        if os.path.exists('pids.txt'):
-            with open('pids.txt', 'r') as f:
+        if os.path.exists(pid_path):
+            with open(pid_path, 'r') as f:
                 print('PIDs file found. Checking if the processes are running...')
                 api_pid = f.readline().strip().split()[-1]
                 web_pid = f.readline().strip().split()[-1]
@@ -150,7 +162,7 @@ if __name__ == '__main__':
         subprocess.run(web_command, shell=True)
         api_pid = subprocess.check_output(['pgrep', '-f', 'api.api'], text=True).strip().split()[-1]
         web_pid = subprocess.check_output(['pgrep', '-f', 'web.web'], text=True).strip().split()[-1]
-        with open('pids.txt', 'w') as f:
+        with open(pid_path, 'w') as f:
             f.write(f'API PID: {api_pid}\n')
             f.write(f'Web PID: {web_pid}\n')
         print(f'API PID: {api_pid}')
