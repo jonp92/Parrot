@@ -1,3 +1,17 @@
+/*
+    * layout.js - This file contains the JavaScript code for the layout of the website.
+    * Currently this includes functionality to determine screen size and make the table scrollable on smaller screens automatically.
+    * 
+    * Author: Jonathan L Pressler
+    * Date: 2024-04-15
+    * Version: 1.0
+    * 
+    * Changelog:
+    * 1.0 - Initial version
+    * 
+*/
+
+// Global variables
 let mobile; 
 
 /*
@@ -20,7 +34,7 @@ function isMobile() {
     }
 }
 
-// Check if the user is on a mobile device and add the scrollable class to the table if they are to make the table condese on smaller screens and scrollable.
+// Check if the user is on a mobile device and add the scrollable class to the table if they are to make the table condense on smaller screens and be scrollable.
 window.onresize = function() {
     mobile = isMobile();
     console.log(mobile);

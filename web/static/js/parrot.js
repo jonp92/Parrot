@@ -3,12 +3,13 @@
     *
     * Author: Jonathan L. Pressler
     * Date: 2024-04-04
-    * Version: 1.5
+    * Version: 1.6
     *
     * Changelog:
     * 1.0 - Initial version
     * 1.5 - Added a second EventSource object to watch for YSFGateway logs and display the reflector/room in the reflector element. Additionally, added a
     * clear log button to clear the log table and an expansion button to toggle the scrollable and sticky-header classes on the table.
+    * 1.6 - Added a timeout to turn off the blinking indicator if the end of transmission is not received within 10 minutes.
     * 
 */
 
@@ -23,17 +24,17 @@ const callsignRegex = /\b[A-Z0-9]{1,2}[0-9]{1}[A-Z]{1,3}\b/g; // regex matches c
 const rfOrNetworkRegex = /\bRF\b|\bnetwork\b/g; // regex matches RF or network strings
 const endOfTxRegex = /\bend of transmission\b/g; // regex matches end of transmission strings
 const dateRegex = /\b\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3}\b/g; // regex matches date strings in the format YYYY-MM-DD HH:MM:SS.SSS
-const myCallsign = document.getElementById("my_callsign").textContent;
+const myCallsign = document.getElementById("my_callsign").textContent || "N0CALL"; // get the callsign from the hidden input element or if it is not set, use N0CALL
 const tableBody = document.getElementById("log_table");
 const table = document.getElementById("call_log");
 const indicator = document.getElementById("indicator");
 const reflector = document.getElementById("reflector");
 const clearLogButton = document.getElementById("clear_log");
 const expansionButton = document.getElementById("expansion_button");
-let blinking = false;
-let endOfMessage = false;
-let lastLine;
-let queue = [];
+let blinking = false; // boolean to determine if the indicator is blinking, starts as false when the page loads
+let endOfMessage = false; // boolean to determine if the end of the message has been reached, starts as false when the page loads
+let lastLine;  // variable to hold the last line logged to the table
+let queue = []; // queue to hold the log entries
 
 /* event listeners */
 /*
@@ -117,9 +118,9 @@ expansionButton.addEventListener('click', () => {
     * updateLog - This function updates the "radio display" with the latest activity and logs it to the table.
     *
     * using the queue, the function checks if the queue is empty and if it is, it returns. If the queue is not empty, it shifts the first element from the queue
-    * and checks if the line is the same as the last line. If it is, it changes the color of the callsign line to green and returns. If the line is not the same
-    * as the last line, it sets the last line to the current line, changes the color of the callsign line to red, and sets the text content of the callsign line
-    * to the callsign. It then sets the text content of the date line to the date and the source line to the source. It then calls the createLogRow function with
+    * and checks if the line is the same as the last line. If it is, it simple returns to avoid duplicate logging. If the line is not the same
+    * as the last line, it sets the last line to the current line and sets the text content of the callsign line to the callsign. 
+    * It then sets the text content of the date line to the date and the source line to the source. Finally, it then calls the createLogRow function with
     * the date, source, and callsign as arguments.
     * 
 */
@@ -127,20 +128,20 @@ function updateLog() {
     if (queue.length === 0) {
         return;
     }
+
     const line = queue.shift();
-    if (line === lastLine) {
+    if (line === lastLine) { // if the line is the same as the last line, simply return as we don't want to log the same line multiple times
         return;
     }
     if (blinking === false) {
         toggleIndicator();
     }
     lastLine = line;
-    callsignLine.style.color = "red";
     callsignLine.textContent = line.split("Callsign: ")[1];
     dateLine.textContent = line.split("Time: ")[1].split(" Source: ")[0];
     sourceLine.textContent = line.split("Source: ")[1].split(" Callsign: ")[0];
     createLogRow(dateLine.textContent, sourceLine.textContent, callsignLine.textContent);
-    if (endOfMessage === true && blinking === true) {
+    if (endOfMessage === true && blinking === true) { 
         toggleIndicator();
     }   
 }
@@ -198,6 +199,16 @@ function toggleIndicator() {
                 indicator.textContent = '●';
             }
         }, 500);
+
+        setTimeout(() => {
+            if (blinking === false) {
+                return;
+            } else {
+                clearInterval(blinkInterval);
+                indicator.textContent = '○';
+                blinking = false;
+            }
+        }, 60000*10);  // If the end of transmission is not received within 10 minutes, turn off the blinking indicator
     }
 }
 

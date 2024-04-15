@@ -1,3 +1,9 @@
+@font-face {
+  font-family: 'Digital-7';
+  src: url(https://fonts.cdnfonts.com/s/17796/digital-7.woff) format('woff'), local('monospace');
+  font-display: swap;    
+}
+
 .lcd-display {
     background: linear-gradient(135deg, #bebdbd, #919090);
     border: 1px solid #555;
