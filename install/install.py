@@ -144,7 +144,7 @@ class Installer:
             self.iptables_rules = [self.api_port, self.web_port]
             for rule in self.iptables_rules:
                 try:
-                    subprocess.run(['iptables', '-A', 'INPUT', '-p', 'tcp', '--dport', rule, '-j', 'ACCEPT'], check=True)
+                    subprocess.run(['iptables', '-A', 'INPUT', '-p', 'tcp', '--dport', str(rule), '-j', 'ACCEPT'], check=True)
                     print(f'Added iptables rule for port {rule}.')
                 except subprocess.CalledProcessError as e:
                     print(f'Error: {e}')
