@@ -109,7 +109,7 @@ class Installer:
         install is a function that installs the Pi-Star CallerID application.
         
         Parameters:
-            None
+            install_dir: A string that represents the directory where the application will be installed
             
         '''
         print(f'Installing Pi-Star CallerID in {install_dir}...')
@@ -172,7 +172,10 @@ if __name__ == '__main__':
     Main function that runs the installer when the script is executed directly vs. being imported.
     '''
     installer = Installer()
-    print('Pi-Star CallerID Installer')
-    print(dir(installer))
+    print('Welcome to the Pi-Star CallerID Installer')
+    install_dir = input('Enter the directory to install the application (default: /usr/local/lib/callerid): ')
     input('Press Enter to continue...')
-    installer.install()
+    if install_dir:
+        installer.install(install_dir=install_dir)
+    else:
+        installer.install()
