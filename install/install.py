@@ -141,12 +141,15 @@ class Installer:
             print('Copied service file to /etc/systemd/system.')
             subprocess.run(['systemctl', 'daemon-reload'], check=True)
             print('Reloaded systemd daemon, Pi-Star CallerID now available as a service.')
-            self.ufw = subprocess.run(['ufw', 'status'], check=True, text=True)
-            if 'inactive' in self.ufw.stdout:
-                print('UFW is inactive. Skipping port opening.')
-            elif 'active' in self.ufw.stdout:
-                subprocess.run(['ufw', 'allow', f'{self.port}/tcp'], check=True)
-                print('UFW is enabled. Opened port 8000 on UFW.')
+            self.iptables_rules = [self.api_port, self.web_port]
+            for rule in self.iptables_rules:
+                try:
+                    subprocess.run(['iptables', '-A', 'INPUT', '-p', 'tcp', '--dport', rule, '-j', 'ACCEPT'], check=True)
+                    print(f'Added iptables rule for port {rule}.')
+                except subprocess.CalledProcessError as e:
+                    print(f'Error: {e}')
+                    print('There was an error adding the iptables rule. Please check the error message and try again.')
+                    print('You may need to add the iptables rule manually or iptables may not be installed.')
         except PermissionError:
             print('Permission denied. Please run the script with elevated privileges.')
             exit(1)
