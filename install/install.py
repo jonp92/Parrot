@@ -34,6 +34,7 @@ class Installer:
             print('Please run the script with elevated privileges.')
             exit(1)
         self.script_dir = os.path.dirname(os.path.realpath(__file__)) # Get the directory of the script, not the (CWD)
+        self.tmpfs_dir = '/var/lib/callerid'
 
     def create_venv(self, venv_parent_dir: str, install_requirements: bool = True):
         '''
@@ -57,6 +58,7 @@ class Installer:
         '''
         venv_dir = '.venv'
         full_dir = f'{venv_parent_dir}/{venv_dir}'
+        
         try:
             venv.EnvBuilder(with_pip=True).create(full_dir)
             print('Virtual environment created successfully.')
@@ -102,6 +104,8 @@ class Installer:
         try:
             subprocess.run(['cp', '-r', '..', install_dir], check=True)
             print('Copied files to install directory.')
+            subprocess.run(['mkdir', '-p', self.tmpfs_dir], check=True)
+            print('Created temporary directory for log files.')
             subprocess.run(['cp', f'{self.script_dir}/callerid.service', '/etc/systemd/system/callerid.service'], check=True)
             print('Copied service file to /etc/systemd/system.')
             subprocess.run(['systemctl', 'daemon-reload'], check=True)
