@@ -1,5 +1,5 @@
 /*
-    * parrot.js - This file is responsible for connecting to multiple SSEs and updating the "radio display" with the latest activity and logging it to the table.
+    * logdog.js - This file is responsible for connecting to multiple SSEs and updating the "radio display" with the latest activity and logging it to the table.
     *
     * Author: Jonathan L. Pressler
     * Date: 2024-04-04
@@ -10,7 +10,7 @@
     * 1.5 - Added a second EventSource object to watch for YSFGateway logs and display the reflector/room in the reflector element. Additionally, added a
     * clear log button to clear the log table and an expansion button to toggle the scrollable and sticky-header classes on the table.
     * 1.6 - Added a timeout to turn off the blinking indicator if the end of transmission is not received within 10 minutes.
-    * 
+    * 1.7 - Renamed to logdog.js as a part of a project rebranding.
 */
 
 /* global variables */

@@ -29,7 +29,7 @@ Exceptions:
     FileNotFoundError: An exception that is raised when the log files are not found
 '''
 
-class Parrot:
+class LogDog:
     def __init__(self):
         '''
         Parrot constructor that reads the config.json file and sets the configuration values as attributes of the class.
@@ -110,7 +110,7 @@ if __name__ == '__main__':
     '''
     This block of code is used to run the Parrot application as a standalone application.
     '''
-    p = Parrot()
+    p = LogDog()
     lines = p.read_log(int(input('Enter number of lines to read: ')), input('Enter a filter string: '))
     print('\n'.join(lines))
     

@@ -1,14 +1,14 @@
 import socket
 from flask import Flask, request, jsonify, render_template, url_for
 from flask_compress import Compress
-from parrot import Parrot
+from logdog import LogDog
 
 '''
-ParrotWeb is a class that extends Parrot and adds a web interface to the Parrot application.
+CallerID is a class that extends Parrot and adds a web interface to the LogDog application.
 
-ParrotWeb is reliant on ParrotAPI to be running on port 8001 to provide the API for the web interface.
-ParrotAPI is responsible for using the Parrot class to read the desired log file and serve the log lines using FastAPI.
-ParrotWeb receives data from ParrotAPI utilizing SSE (Server-Sent Events) to update the Radio Display and log table in real-time.
+CallerID is reliant on LogDogAPI to be running on port 8001 to provide the API for the web interface.
+LogDogAPI is responsible for using the Parrot class to read the desired log file and serve the log lines using FastAPI.
+CallerID receives data from LogDogAPI utilizing SSE (Server-Sent Events) to update the Radio Display and log table in real-time.
 
 Attributes:
     app: A Flask object that represents the web application
@@ -22,7 +22,7 @@ Methods:
 Returns:
     None
 '''
-class ParrotWeb(Parrot):
+class CallerID(LogDog):
     def __init__(self):
         super().__init__()
         self.app = Flask(__name__)
@@ -106,10 +106,10 @@ class ParrotWeb(Parrot):
         
 if __name__ == '__main__':
     '''
-    main is the entry point for the ParrotWeb application.
+    main is the entry point for the CallerID application.
     
-    This code block creates an instance of ParrotWeb and runs the web application when the script is executed directly instead of being imported.
+    This code block creates an instance of CallerID and runs the web application when the script is executed directly instead of being imported.
     '''
-    p = ParrotWeb()
-    print(f'Starting ParrotWeb on http://{p.host}:{p.web_port}')
+    p = CallerID()
+    print(f'Starting CallerID on http://{p.host}:{p.web_port}')
     p.run()

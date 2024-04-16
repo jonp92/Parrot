@@ -1,11 +1,12 @@
-#!/home/pi-star/Parrot/.venv/bin/python
+#!.venv/bin/python3
 '''
     launcher.py
-    Manage the lifecycle of the Parrot application
-    Description: This is the main file that will be used to launch the application. Note: can be run directly from the command line without calling python.
+    Manage the lifecycle of the Pi-Star CallerID application
+    Description: This is the main file that will be used to launch the application. Note: can be run directly from the command line without calling python
+    if the file has the correct permissions.
     Author: Jonathan L. Pressler
     Date: 2024/04/07
-    Version: 1.0
+    Version: 1.1
 '''
 
 import subprocess
@@ -14,9 +15,9 @@ import os
 
 if __name__ == '__main__':
     '''
-    This block of code is used to run the Parrot application.
+    This block of code is used to run the Pi-Star CallerID application.
     
-    This script is used to manage the lifecycle of the Parrot application. It can start, stop, update, and eventually check the status of the application.
+    This script is used to manage the lifecycle of the Pi-Star CallerID application. It can start, stop, update, and eventually check the status of the application.
     
     The following command is used to start the API and Web applications:
     nohup python api.py > api.log 2>&1 &
@@ -58,18 +59,18 @@ if __name__ == '__main__':
     current_dir = os.path.dirname(os.path.realpath(__file__))
     is_service = False
     pid_path = 'pids.txt'
-    if current_dir == '/usr/local/lib/parrot':
-        # If the script is run from the /usr/local/lib/parrot directory, the log files will be written to /var/lib/parrot
-        # This is because when running from Pi-Star, the /usr/local/lib/parrot directory is read-only.
+    if current_dir == '/usr/local/lib/callerid':
+        # If the script is run from the /usr/local/lib/callerid directory, the log files will be written to /var/lib/callerid
+        # This is because when running from Pi-Star, the /usr/local/lib/callerid directory is read-only.
         # We also set the is_service variable to True for further code to be aware that the script is running as a service.
         is_service = True
-        pid_path = '/var/lib/parrot/pids.txt'
-        api_command = 'nohup .venv/bin/python3 -m api.api > /var/lib/parrot/api.log 2>&1 &'
-        web_command = 'nohup .venv/bin/python3 -m web.web > /var/lib/parrot/web.log 2>&1 &'
+        pid_path = '/var/lib/callerid/pids.txt'
+        api_command = 'nohup .venv/bin/python3 -m api.api > /var/lib/callerid/api.log 2>&1 &'
+        web_command = 'nohup .venv/bin/python3 -m web.web > /var/lib/callerid/web.log 2>&1 &'
     else:
         api_command = 'nohup .venv/bin/python3 -m api.api > api.log 2>&1 &'
         web_command = 'nohup .venv/bin/python3 -m web.web > web.log 2>&1 &'
-    arg_parser = argparse.ArgumentParser(description='Launch the Parrot application')
+    arg_parser = argparse.ArgumentParser(description='Launch the Pi-Star CallerID application')
     arg_parser.add_argument('-k', '--kill', action='store_true', help='Kill the running processes')
     arg_parser.add_argument('-u', '--update', action='store_true', help='Update the application')
     args = arg_parser.parse_args()

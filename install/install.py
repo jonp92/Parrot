@@ -3,17 +3,17 @@ import subprocess
 import os
 
 '''
-Installer is a class that installs the Parrot application.
+Installer is a class that installs the Pi-Star CallerID application.
 
-The installer class is used to install the Parrot application. It creates a virtual environment, installs the requirements,
+The installer class is used to install the Pi-Star CallerID application. It creates a virtual environment, installs the requirements,
 copies the files to the install directory, and sets up the systemd service.
 
 Variables:
     script_dir: A string that represents the directory of the script
 
 Methods:
-    create_venv(venv_dir: str = '.venv', install_requirements: bool = True): Creates a virtual environment for the Parrot application.
-    install(install_dir: str = '/usr/local/lib/parrot'): Installs the Parrot application.
+    create_venv(venv_dir: str = '.venv', install_requirements: bool = True): Creates a virtual environment for the Pi-Star CallerID application.
+    install(install_dir: str = '/usr/local/lib/callerid'): Installs the Pi-Star CallerID application.
 
 Returns:
     None
@@ -37,7 +37,7 @@ class Installer:
 
     def create_venv(self, venv_parent_dir: str, install_requirements: bool = True):
         '''
-        create_venv is a function that creates a virtual environment for the Parrot application.
+        create_venv is a function that creates a virtual environment for the Pi-Star CallerID application.
         
         Parameters:
             install_requirements: A boolean that represents whether the requirements should be installed
@@ -89,23 +89,23 @@ class Installer:
                 print('Please check the error message and try again.')
                 exit(1)
                 
-    def install(self, install_dir: str = '/usr/local/lib/parrot'):
+    def install(self, install_dir: str = '/usr/local/lib/callerid'):
         '''
-        install is a function that installs the Parrot application.
+        install is a function that installs the Pi-Star CallerID application.
         
         Parameters:
             None
             
         '''
-        print(f'Installing Parrot in {install_dir}...')
+        print(f'Installing Pi-Star CallerID in {install_dir}...')
         self.create_venv(install_dir)
         try:
             subprocess.run(['cp', '-r', '..', install_dir], check=True)
             print('Copied files to install directory.')
-            subprocess.run(['cp', f'{self.script_dir}/parrot.service', '/etc/systemd/system/parrot.service'], check=True)
+            subprocess.run(['cp', f'{self.script_dir}/callerid.service', '/etc/systemd/system/callerid.service'], check=True)
             print('Copied service file to /etc/systemd/system.')
             subprocess.run(['systemctl', 'daemon-reload'], check=True)
-            print('Reloaded systemd daemon, Parrot now available as a service.')
+            print('Reloaded systemd daemon, Pi-Star CallerID now available as a service.')
         except PermissionError:
             print('Permission denied. Please run the script with elevated privileges.')
             exit(1)
@@ -117,11 +117,11 @@ class Installer:
             print(f'Error: {e}')
             print('An unknown error occurred. Please check the error message and try again.')
             exit(1)
-        print('Parrot installed successfully.')
-        print('To start the Parrot application, run the following commands:')
-        print('sudo systemctl start parrot')
-        print('To enable the Parrot application on boot, run the following command:')
-        print('sudo systemctl enable parrot')
+        print('Pi-Star CallerID installed successfully.')
+        print('To start the Pi-Star CallerID application, run the following commands:')
+        print('sudo systemctl start Pi-Star CallerID')
+        print('To enable the Pi-Star CallerID application on boot, run the following command:')
+        print('sudo systemctl enable Pi-Star CallerID')
         
 if __name__ == '__main__':
     '''

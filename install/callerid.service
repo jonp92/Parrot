@@ -1,0 +1,13 @@
+[Unit]
+Description=Pi-Star CallerID Service
+After=network.target
+
+[Service]
+Type=forking
+WorkingDirectory=/usr/local/lib/callerid
+ExecStart=/usr/local/lib/callerid/.venv/bin/python3 launcher.py
+ExecStop=/usr/local/lib/callerid/.venv/bin/python3 launcher.py -k
+Restart=on-failure
+
+[Install]
+WantedBy=default.target

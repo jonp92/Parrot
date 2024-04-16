@@ -3,15 +3,15 @@ import socket
 from starlette.responses import StreamingResponse
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from parrot import Parrot
+from logdog import LogDog
 
 '''
-ParrotAPI is a class that extends Parrot and adds an API to the Parrot application.
+LogDogAPI is a class that extends Parrot and adds an API to the Parrot application.
 
-ParrotAPI is responsible for using the Parrot class to read the desired log file and serve the log lines using FastAPI.
+LogDogAPI is responsible for using the Parrot class to read the desired log file and serve the log lines using FastAPI.
 FastAPI was chosen for its simplicity and raw performance along with being ideal for supporting a large number of concurrent connections.
 Additionally, adding a websocket to the API would be trivial if needed in the future due to FastAPI's support for websockets being built-in.
-ParrotAPI provides two routes: /read_log and /watch_log. /read_log reads the log file and returns the log lines as a response.
+LogDogAPI provides two routes: /read_log and /watch_log. /read_log reads the log file and returns the log lines as a response.
 /watch_log reads the log file and returns the log lines as a response in real-time using Server-Sent Events (SSE).
 
 Attributes:
@@ -31,10 +31,10 @@ Exceptions:
     
 '''
 
-class ParrotAPI(Parrot):
+class LogDogAPI(LogDog):
     def __init__(self):
         '''
-        ParrotAPI constructor that initializes the FastAPI application and sets up the routes for the API.
+        LogDogAPI constructor that initializes the FastAPI application and sets up the routes for the API.
         
         '''
         super().__init__()
@@ -126,7 +126,7 @@ class ParrotAPI(Parrot):
         
 if __name__ == '__main__':
     '''
-    Main method that creates an instance of ParrotAPI and runs the API application.
+    Main method that creates an instance of LogDogAPI and runs the API application.
     '''
-    p = ParrotAPI()
+    p = LogDogAPI()
     p.run()
