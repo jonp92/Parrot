@@ -1,6 +1,7 @@
 import venv
 import subprocess
 import os
+import json
 
 '''
 Installer is a class that installs the Pi-Star CallerID application.
@@ -35,6 +36,18 @@ class Installer:
             exit(1)
         self.script_dir = os.path.dirname(os.path.realpath(__file__)) # Get the directory of the script, not the (CWD)
         self.tmpfs_dir = '/var/lib/callerid'
+        config_path = os.path.join(self.script_dir, '..', 'config.json')
+        self.config = json.load(open(config_path)) if os.path.isfile(config_path) else None
+        if self.config:
+            for key in self.config:
+                setattr(self, key, self.config[key])
+                if self.config[key] == "True":
+                    setattr(self, key, True)
+                elif self.config[key] == "False":
+                    setattr(self, key, False)
+        else:
+            print('config.json not found. Please create a config.json file in the root directory. Exiting...')
+            exit(1)
 
     def create_venv(self, venv_parent_dir: str, install_requirements: bool = True):
         '''
@@ -100,16 +113,40 @@ class Installer:
             
         '''
         print(f'Installing Pi-Star CallerID in {install_dir}...')
+        if os.path.exists(install_dir):
+            print(f'Install directory {install_dir} already exists.')
+            remove_files = input('Would you like to remove the existing files? (y/n): ')
+            remove_files = True if remove_files.lower() == 'y' else False
+            if remove_files:
+                try:
+                    if install_dir not in ['/usr/local/lib/callerid', '/root/callerid', '/home/pi-star/callerid', '/opt/callerid']:
+                        print('Install directory is not in a safe location to delete. Exiting...')
+                        exit(1)
+                    subprocess.run(['rm', '-rf', install_dir], check=True)
+                    print('Removed existing files from install directory.')
+                except subprocess.CalledProcessError as e:
+                    print(f'Error: {e}')
+                    print('There was an error removing the files. Please check the error message and try again.')
+                    exit(1)
         self.create_venv(install_dir)
         try:
             subprocess.run(['cp', '-r', '..', install_dir], check=True)
             print('Copied files to install directory.')
-            subprocess.run(['mkdir', '-p', self.tmpfs_dir], check=True)
+            os.makedirs(self.tmpfs_dir, exist_ok=True)
+            with open ('/etc/fstab', 'a') as f:
+                f.write(f'tmpfs {self.tmpfs_dir} tmpfs nodev,noatime,nosuid,mode=0755,size=10m 0 0\n')
+            subprocess.run(['mount', '-a'], check=True)
             print('Created temporary directory for log files.')
             subprocess.run(['cp', f'{self.script_dir}/callerid.service', '/etc/systemd/system/callerid.service'], check=True)
             print('Copied service file to /etc/systemd/system.')
             subprocess.run(['systemctl', 'daemon-reload'], check=True)
             print('Reloaded systemd daemon, Pi-Star CallerID now available as a service.')
+            self.ufw = subprocess.run(['ufw', 'status'], check=True, text=True)
+            if 'inactive' in self.ufw.stdout:
+                print('UFW is inactive. Skipping port opening.')
+            elif 'active' in self.ufw.stdout:
+                subprocess.run(['ufw', 'allow', f'{self.port}/tcp'], check=True)
+                print('UFW is enabled. Opened port 8000 on UFW.')
         except PermissionError:
             print('Permission denied. Please run the script with elevated privileges.')
             exit(1)
@@ -132,4 +169,7 @@ if __name__ == '__main__':
     Main function that runs the installer when the script is executed directly vs. being imported.
     '''
     installer = Installer()
+    print('Pi-Star CallerID Installer')
+    print(dir(installer))
+    input('Press Enter to continue...')
     installer.install()
